@@ -1,5 +1,5 @@
 {
-  "name": "socialApp",
+  "name": "socialapp",
   "private": true,
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
