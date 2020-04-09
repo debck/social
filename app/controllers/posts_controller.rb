@@ -15,7 +15,7 @@ class PostsController < ApplicationController
     @post = Post.new(content: params[:content])
     if @post.save
       flash[:notice] = "Post successfully created"
-      redirect_to("/posts/index")
+      redirect_to("/posts")
     else
       render("posts/new")
     end
@@ -30,7 +30,7 @@ class PostsController < ApplicationController
     @post.content = params[:content]
     if @post.save
       flash[:notice] = "Post successfully edited"
-      redirect_to("/posts/index")
+      redirect_to("/posts/")
     else
       render("posts/edit")
     end
@@ -40,7 +40,7 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: params[:id])
     @post.destroy
     flash[:notice] = "Post successfully deleted"
-    redirect_to("/posts/index")
+    redirect_to("/posts")
   end
   
 end

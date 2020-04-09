@@ -3,27 +3,52 @@
   <head>
     <title>SocialApp</title>
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-  <header>
+    <header>
       <div class="header-logo">
-        <%= link_to('SocialApp', '/')%>
+        <% if @current_user %>
+          <%= link_to("SocialApp", "/posts") %>
+        <% else %>
+          <%= link_to("SocialApp", "/") %>
+        <% end %>
       </div>
       <ul class="header-menus">
-        <li><%= link_to('About Us', '/about')%></li>
-        <li><%= link_to("Posts", "/posts/index") %></li>
-        <li><%= link_to("New post", "/posts/new") %></li>
-        <li><%= link_to("Users", "/users/index") %></li>
-        <li><%= link_to("Sign up", "/signup") %></li>
+        <% if @current_user %>
+          <li>
+            <%= link_to(@current_user.name, "/users/#{@current_user.id}") %>
+          </li>
+          <li>
+            <%= link_to("Posts", "/posts") %>
+          </li>
+          <li>
+            <%= link_to("New post", "/posts/new") %>
+          </li>
+          <li>
+            <%= link_to("Users", "/users") %>
+          </li>
+          <li>
+            <%= link_to("Log out", "/logout", {method: :post}) %>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to("About", "/about") %>
+          </li>
+          <li>
+            <%= link_to("Sign up", "/signup") %>
+          </li>
+          <li>
+            <%= link_to("Log in", "/login") %>
+          </li>
+        <% end %>
       </ul>
     </header>
 
-     <% if flash[:notice] %>
+    <% if flash[:notice] %>
       <div class="flash">
         <%= flash[:notice] %>
       </div>
