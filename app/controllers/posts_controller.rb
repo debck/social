@@ -1,10 +1,14 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user
+  before_action :ensure_correct_user, {only: [:edit, :update, :destroy]}
+  
   def index
     @posts = Post.all.order(created_at: :desc)
   end
   
   def show
     @post = Post.find_by(id: params[:id])
+    @user = @post.user
   end
   
   def new
@@ -12,10 +16,13 @@ class PostsController < ApplicationController
   end
   
   def create
-    @post = Post.new(content: params[:content])
+    @post = Post.new(
+      content: params[:content],
+      user_id: @current_user.id
+    )
     if @post.save
       flash[:notice] = "Post successfully created"
-      redirect_to("/posts")
+      redirect_to("/posts/")
     else
       render("posts/new")
     end
@@ -36,11 +43,19 @@ class PostsController < ApplicationController
     end
   end
   
-  def delete
+  def destroy
     @post = Post.find_by(id: params[:id])
     @post.destroy
     flash[:notice] = "Post successfully deleted"
-    redirect_to("/posts")
+    redirect_to("/posts/")
+  end
+  
+  def ensure_correct_user
+    @post = Post.find_by(id: params[:id])
+    if @post.user_id != @current_user.id
+      flash[:notice] = "Unauthorized access"
+      redirect_to("/posts/")
+    end
   end
   
 end
