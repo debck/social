@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     if @user
       session[:user_id] = @user.id
       flash[:notice] = "You have logged in successfully"
-      redirect_to("/posts/index")
+      redirect_to("/posts/")
     else
       @error_message = "Invalid email/password combination"
       @email = params[:email]
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
   def ensure_correct_user
     if @current_user.id != params[:id].to_i
       flash[:notice] = "Unauthorized access"
-      redirect_to("/posts/index")
+      redirect_to("/posts/")
     end
   end
 end
